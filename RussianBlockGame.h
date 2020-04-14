@@ -881,6 +881,13 @@ namespace RussianBlocks{
             bool alphaFlag = true;
             SDL_Color drawColor;
             int x, y;
+            SDL_Rect backRect = {.x = posX, .y = posY,
+                                 .w = cols * unitBlockSize,
+                                 .h = rows * unitBlockSize};
+            SDL_SetRenderDrawColor(renderer, backgroundColor.r,
+                                    backgroundColor.g, backgroundColor.b,
+                                    backgroundColor.a);
+            SDL_RenderFillRect(renderer, &backRect);
             render();
             while(deltaTime < animationTimeLength){
                 currentTime = SDL_GetTicks();
