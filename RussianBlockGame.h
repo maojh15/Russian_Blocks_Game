@@ -881,6 +881,7 @@ namespace RussianBlocks{
             bool alphaFlag = true;
             SDL_Color drawColor;
             int x, y;
+            render();
             while(deltaTime < animationTimeLength){
                 currentTime = SDL_GetTicks();
                 deltaTime = currentTime - oldtime;
@@ -916,6 +917,7 @@ namespace RussianBlocks{
                 }
             }
 
+            //Blocks fall down
             for(int i = 0; i < len; ++i){
                 for(int linenum = indexOfRowsDisspr[i]; linenum > i; --linenum){
                     for(int j = 0; j < cols; ++j){
