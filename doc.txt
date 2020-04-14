@@ -1,0 +1,3 @@
+heroListFile:
+    filename: gameData0
+    data form: pairs: (name: chars, score: int);
