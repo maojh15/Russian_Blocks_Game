@@ -395,6 +395,7 @@ void RussianBlocks::play(SDL_Renderer *renderer){
     //main loop
     SDL_Event eve;
     Uint32 time = 0, deltaTime, oldTime = 0;
+    bool pauseFlag = false;
     // bool pauseFlag = false;
     while(RussianBlocks::gameState == RussianBlocks::PLAY){
         oldTime = time;
@@ -429,8 +430,8 @@ void RussianBlocks::play(SDL_Renderer *renderer){
                             blockdata.currentBlock.posInBlockDataX += 1;
                         break;
                     case SDLK_SPACE:
-                        RussianBlocks::gameState = RussianBlocks::PAUSE;
-                        blockdata.savedFlag = true;
+                        pauseFlag = true;
+                        // blockdata.savedFlag = true;
                         break;
                     //debug
                     // case SDLK_d:
@@ -447,6 +448,30 @@ void RussianBlocks::play(SDL_Renderer *renderer){
                     //     break;
                 }
             }
+        }
+
+        if(pauseFlag){
+            pauseFlag = RussianBlocks::pause(renderer);
+            time = SDL_GetTicks();
+            SDL_SetRenderDrawColor(renderer, backgroundColor.r,
+                                backgroundColor.g,
+                                backgroundColor.b,
+                                backgroundColor.a);
+            SDL_RenderClear(renderer);
+            
+            //render        
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            mainBlock.render();
+            nextBlockUI.render();
+            nextHint.render();
+            nextBlockRenderer.render();
+            getScoresText.render();
+            scoreNumText.render();
+            hintText.render();
+            blockdata.render();
+
+            SDL_RenderPresent(renderer);
+            continue;
         }
 
         //keyboard input.
@@ -683,7 +708,9 @@ void RussianBlocks::gameover(SDL_Renderer *renderer){
     TTF_CloseFont(inputTextFont);
 }
 
-void RussianBlocks::pause(SDL_Renderer *renderer){
+//return true: still pause;
+//return false: continue playing game;
+bool RussianBlocks::pause(SDL_Renderer *renderer){
     TTF_Font *pauseHintFont = TTF_OpenFont(fontFilename, 45);
     // TTF_SetFontStyle(pauseHintFont, TTF_STYLE_BOLD);
     TTF_Font *pauseHintFont1 = TTF_OpenFont(fontFilename, 33);
@@ -711,7 +738,8 @@ void RussianBlocks::pause(SDL_Renderer *renderer){
     TTF_CloseFont(pauseHintFont1);
 
     SDL_Event eve;
-    while(RussianBlocks::gameState == RussianBlocks::PAUSE){
+    // while(RussianBlocks::gameState == RussianBlocks::PAUSE){
+    while(true){
         while(SDL_PollEvent(&eve)){
             if(eve.type == SDL_QUIT){
                 RussianBlocks::gameState = RussianBlocks::EXIT;
@@ -719,14 +747,15 @@ void RussianBlocks::pause(SDL_Renderer *renderer){
             else if(eve.type == SDL_KEYDOWN){
                 switch(eve.key.keysym.sym){
                     case SDLK_SPACE:
-                        RussianBlocks::gameState = RussianBlocks::PLAY;
+                        // RussianBlocks::gameState = RussianBlocks::PLAY;
+                        return false;
                         break;
                     case SDLK_ESCAPE:
                         if(RussianBlocks::messageHint(renderer, "离开将会丢失当前游戏进度，\n是否确定？")){
                             RussianBlocks::gameState = RussianBlocks::STARTMENU;
                             blockdata.savedFlag = false;
                         }
-
+                        return true;
                         break;
                 }
             }
@@ -799,7 +828,7 @@ bool RussianBlocks::messageHint(SDL_Renderer *renderer, const std::string &hintS
                      buttonTextFont, " 取 消 ", {0, 0, 0, 255},
                      ButtonColor);
     buttons[1].callbackFunc = messageHint_Button1;
-    unsigned int selected = 1;
+    unsigned int selected = 0;
     buttons[selected].isSelected = true;
 
     RussianBlocks::pauseHintUI hintui{renderer, hintText[0].rect.x,

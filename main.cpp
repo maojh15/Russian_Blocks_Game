@@ -8,7 +8,7 @@
 //Global parameters definition
 std::default_random_engine RussianBlocks::randomE;
 const char* configfilename = "config.lua"; 
-const char* heroListFilename = "GameData0";
+const char* heroListFilename = "gamedata/GameData0";
 RussianBlocks::HeroListType RussianBlocks::heroList;
 const SDL_Color RussianBlocks::heroRecord::activeColor = {255, 50, 251, 255}; 
 
@@ -16,7 +16,7 @@ int SCR_WIDTH = 600;
 int SCR_HEIGHT = 800;
 int frame = 30;
 float msPerFrame = 1000.0 / frame;
-const char* fontFilename = "fangzhengxiangsu14.ttf";
+const char* fontFilename = "gamedata/fangzhengxiangsu14.ttf";
 namespace RussianBlocks{
     State gameState = RussianBlocks::LOADING;
     Uint32 time, deltaTime;
@@ -68,10 +68,10 @@ int main(int argv, char* argc[]){
                 // std::cout << "gameover!" << std::endl;
                 RussianBlocks::gameover(renderer);
                 break;
-            case RussianBlocks::PAUSE:
-                // std::cout << "pause!" << std::endl;
-                RussianBlocks::pause(renderer);
-                break;
+            // case RussianBlocks::PAUSE:
+            //     // std::cout << "pause!" << std::endl;
+            //     RussianBlocks::pause(renderer);
+            //     break;
         }
     }
     

@@ -44,7 +44,7 @@ namespace RussianBlocks{
     extern void heroesList(SDL_Renderer *renderer);
     extern void play(SDL_Renderer *renderer);
     extern void gameover(SDL_Renderer *renderer);
-    extern void pause(SDL_Renderer *renderer);
+    extern bool pause(SDL_Renderer *renderer);
     extern bool messageHint(SDL_Renderer *renderer, const std::string& hintString);
 
     struct heroRecord{
